@@ -16,6 +16,14 @@ if not file.exists():
    logger.info(f"File not exists {file.exists()}")
 else:
     df = pd.read_json(file, lines=True)
+    df.columns = df.iloc[0]
+
+    # Verwijder de eerste rij (die nu als kolomnamen is ingesteld)
+    df = df[1:]
+
+    # Herstel de index van de DataFrame
+    df = df.reset_index(drop=True)
+    df = df.dropna()
 
     if "dataframe" not in st.session_state:
         st.session_state.dataframe = df
